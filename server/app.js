@@ -5,6 +5,8 @@ const partials = require('express-partials');
 const bodyParser = require('body-parser');
 const Auth = require('./middleware/auth');
 const models = require('./models');
+const loggify = require('./loggify');
+const cookieParser = require('./middleware/cookieParser');
 
 const app = express();
 
@@ -16,9 +18,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
 
 
+app.use(cookieParser);
 
-app.get('/', 
-(req, res) => {
+// app.get('/')
+
+// app.use(Auth.isLoggedIn);
+
+app.get('/', (req, res) => {
+//todo figure out if a session is currently active
+  // res.redirect('signup');
   res.render('index');
 });
 
@@ -77,7 +85,17 @@ app.post('/links',
 /************************************************************/
 // Write your authentication routes here
 /************************************************************/
+app.get('/login', (req, res, next)=>{
+  res.render('login');
+});
 
+app.post('/login', Auth.tryLogin);
+
+app.get('/signup', (req, res, next) => {
+  res.render('signup');
+});
+
+app.post('/signup', Auth.createUser);
 
 
 /************************************************************/

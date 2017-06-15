@@ -23,6 +23,8 @@ describe('', function() {
 
   var clearDB = function(connection, tablenames, done) {
     var count = 0;
+  
+
     tablenames.forEach(function(tablename) {
       connection.query('DROP TABLE IF EXISTS ' + tablename, function() {
         count++;
@@ -39,16 +41,14 @@ describe('', function() {
     /* TODO: Update user and password if different than on your local machine            */
     /*************************************************************************************/
     db = mysql.createConnection({
-      user: 'student',
-      password: 'student',
+      user: 'root',
+      password: 'plantlife',
       database: 'shortly'
     });
-
+    /*************************************it to the tablenames collection *************************************************/
+    /* TODO: If you create a new MySQL tables, add below. */
     /**************************************************************************************/
-    /* TODO: If you create a new MySQL tables, add it to the tablenames collection below. */
-    /**************************************************************************************/
-    var tablenames = ['links', 'clicks'
-];
+    var tablenames = ['links', 'clicks', 'users', 'sessions'];
 
     db.connect(function(err) {
       if (err) { return done(err); }
@@ -59,10 +59,11 @@ describe('', function() {
       });
     });
 
+
     afterEach(function() { server.close(); });
   });
 
-  describe('Database Schema:', function() {
+  xdescribe('Database Schema:', function() {
     it('contains a users table', function(done) {
       var queryString = 'SELECT * FROM users';
       db.query(queryString, function(err, results) {
@@ -326,11 +327,11 @@ describe('', function() {
     });
   });
 
-  xdescribe('Express Middleware', function() {
+  describe('Express Middleware', function() {
     var cookieParser = require('../server/middleware/cookieParser.js');
     var createSession = require('../server/middleware/auth.js').createSession;
 
-    describe('Cookie Parser', function() {
+    xdescribe('Cookie Parser', function() {
 
       it('parses cookies and assigns an object of key-value pairs to a session property on the request', function(done) {
         var requestWithoutCookies = httpMocks.createRequest();

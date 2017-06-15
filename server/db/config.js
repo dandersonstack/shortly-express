@@ -4,7 +4,7 @@ module.exports = (db) => {
   if (!db.queryAsync) {
     db = Promise.promisifyAll(db);
   }
-
+  // console.log("The databse is:", db.threadId);
   // Create links table
   return db.queryAsync(`
     CREATE TABLE IF NOT EXISTS links (
